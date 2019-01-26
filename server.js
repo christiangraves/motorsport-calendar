@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 3001;
+require('dotenv').config();
 const session = require('express-session');
 const passport = require('./passport');
 
@@ -21,6 +22,7 @@ require('./routes/api-routes')(app);
 
 // Connect to the Mongo DB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/motorsports");
+//mongodb://process.env.User:process.env.motorsport@ds225078.mlab.com:25078/heroku_qdsgbc02
 
 // Start the API server
 app.listen(PORT, function() {
