@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import Login from './Login';
 import Register from './Register';
 import axios from 'axios';
-import {} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 
 class Home extends Component {
     state = {
         username: '',
         password: '',
-        redirectTo: null,
+        confirmPass:'',
         needReg: false
     }
 
@@ -24,11 +24,16 @@ class Home extends Component {
 
         axios.post('/api/login', {username, password})
             .then((res) => {
-                console.log(res);
-                if(res.data){
-                    console.log('logged in')
+                console.log(res.data);
+                if(res.data.username === username && res.data.password === password){
+                    this.props.history.push('/landing')
                 }
-                else{
+                else if(res.data.username !== username){
+                    alert('Username not found!');
+                    console.log('login error')
+                }
+                else if(res.data.username === username && res.data.password !== password){
+                    alert('Wrong password!');
                     console.log('login error')
                 }
             }).catch(error => {
@@ -39,6 +44,11 @@ class Home extends Component {
 
     regClick = (event) => {
         event.preventDefault()
+        const {password, confirmPassword} = this.state;
+
+        if (password !== confirmPassword){
+            alert("Passwords do not match!")
+        }else{
         axios.post('/api/reg', { username: this.state.username, password:this.state.password})
             .then(res => {
                 console.log(res);
@@ -54,6 +64,7 @@ class Home extends Component {
                 console.log(error);
             })
             this.setState({needReg: false});
+        }
     }
 
     regDisplay = (event) => {
@@ -64,10 +75,11 @@ class Home extends Component {
 
 
     render(){
+        const {needReg} = this.state
         return(
             <div>
             {
-                this.state.needReg === false ?
+                !needReg ?
                 <Login
                 detectChange = {this.detectChange}
                 loginClick = {this.loginClick}
@@ -76,7 +88,8 @@ class Home extends Component {
                 :
                 <Register
                 detectChange={this.detectChange}
-                regClick={this.regClick} 
+                regClick={this.regClick}
+                
                 />
             }
             </div>
@@ -84,4 +97,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default withRouter (Home);

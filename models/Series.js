@@ -8,6 +8,9 @@ const SeriesSchema = new Schema({
   name: {
     type: String
   },
+  info: {
+      type: String
+  },
  teams: {
      type: Array
  },

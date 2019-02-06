@@ -18,23 +18,22 @@ module.exports = function (app) {
 
   app.post('/api/reg', function (req, res) {
     console.log('user signup');
-    
-    const {username, password} = req.body
 
-    User.findOne({username: username}, (error, user)=> {
-      if(error){
+    const { username, password } = req.body
+
+    User.findOne({ username: username }, (error, user) => {
+      if (error) {
         console.log('user.js post error: ', error)
-      } else if (user){
-        res.json({error:`Username: ${username} already taken` })
-        // {error:`Username: ${username} already taken` }
+      } else if (user) {
+        res.json({ error: `Username: ${username} already taken` })
       }
-      else{
+      else {
         const regUser = new User({
           username: username,
           password: password
         })
         regUser.save((err, savedUser) => {
-          if(error) return res.json(err)
+          if (error) return res.json(err)
           res.json(savedUser)
         })
       }
@@ -44,27 +43,13 @@ module.exports = function (app) {
   app.post('/api/login', function (req, res) {
     User.findOne({
       username: req.body.username
-    }, function(err, user) {
-      if (err) throw err;
-  
-      if (!user) {
-        res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
-      } else {
-        // check if password matches
-
-
-
-
-
-        // user.comparePassword(req.body.password, function (err, isMatch) {
-        //   if (isMatch && !err) {
-        //     // return the information including token as JSON
-        //     res.json({success: true});
-        //   } else {
-        //     res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
-        //   }
-        // });
-      }
-    });
-  })
+    })
+      .then(function (data) {
+        console.log(data);
+        res.json(data);
+      })
+      .catch(function (err) {
+        res.json(err);
+      });
+  });
 }
