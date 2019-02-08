@@ -28,7 +28,7 @@ class Home extends Component {
                 if(res.data.username === username && res.data.password === password){
                     this.props.history.push('/landing')
                 }
-                else if(res.data.username !== username){
+                else if(!res.data.username){
                     alert('Username not found!');
                     console.log('login error')
                 }
