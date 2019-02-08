@@ -24,15 +24,19 @@ module.exports = function (app) {
     User.findOne({ username: username }, (error, user) => {
       if (error) {
         console.log('user.js post error: ', error)
+        res.json(error);
       } else if (user) {
+        console.log("else if");
         res.json({ error: `Username: ${username} already taken` })
       }
       else {
+        console.log("else");
         const regUser = new User({
           username: username,
           password: password
         })
         regUser.save((err, savedUser) => {
+          console.log("else regUser.save");
           if (error) return res.json(err)
           res.json(savedUser)
         })
@@ -41,6 +45,7 @@ module.exports = function (app) {
   });
 
   app.post('/api/login', function (req, res) {
+    console.log("user login");
     User.findOne({
       username: req.body.username
     })
@@ -49,6 +54,7 @@ module.exports = function (app) {
         res.json(data);
       })
       .catch(function (err) {
+        console.log(err);
         res.json(err);
       });
   });
