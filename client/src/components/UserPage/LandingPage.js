@@ -48,8 +48,8 @@ class Series extends Component {
           const allEvents = series[id].events;
 
           for(let i = 0; i < allEvents.length; i++){
-                allEvents[i].start = moment(allEvents[i].start).add(1,'day');
-                allEvents[i].end = moment(allEvents[i].end).add(1,'day');
+                allEvents[i].start = moment(allEvents[i].start);//.add(1,'day');
+                allEvents[i].end = moment(allEvents[i].end);//.add(1,'day');
           }
           this.setState({soloEvents: allEvents})
       }
