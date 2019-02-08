@@ -1,10 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 require('dotenv').config();
-const session = require('express-session');
-const passport = require('./passport');
 
 
 // Define middleware here
@@ -22,7 +20,7 @@ require('./routes/api-routes')(app);
 
 // Connect to the Mongo DB
 //mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/motorsports");
-mongoose.connect(process.env.MONGODB_URI || "mongodb://motorsport1:pass123@ds225078.mlab.com:25078/heroku_qdsgbc02");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://motorsport1:pass123@ds225078.mlab.com:25078/heroku_qdsgbc02",{useNewUrlParser: true});
 
 // Start the API server
 app.listen(PORT, function() {
